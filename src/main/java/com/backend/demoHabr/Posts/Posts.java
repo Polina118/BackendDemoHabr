@@ -22,27 +22,22 @@ public class Posts {
             generator = "posts_sequence"
     )
     @Column(updatable = false)
-    private Long Id;
+    private Integer Id;
 
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String description;
-    private Long user_id;
-
+    private Integer user_id;
+    private Integer subchapter_id;
 
     public Posts(){}
 
-    public Posts(String title, String description, Long user_id) {
+    public Posts(String title, String description, Integer user_id, Integer subchapter_id) {
         this.title = title;
         this.description = description;
         this.user_id = user_id;
-    }
-
-    public Posts(Long id, String title, String description) {
-        Id = id;
-        this.title = title;
-        this.description = description;
+        this.subchapter_id = subchapter_id;
     }
 }

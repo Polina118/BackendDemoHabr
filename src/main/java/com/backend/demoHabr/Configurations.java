@@ -4,8 +4,12 @@ import com.backend.demoHabr.Chapter.Chapter;
 import com.backend.demoHabr.Chapter.ChapterRepository;
 import com.backend.demoHabr.Posts.Posts;
 import com.backend.demoHabr.Posts.PostsRepository;
+import com.backend.demoHabr.Roles.Roles;
+import com.backend.demoHabr.Roles.RolesRepository;
 import com.backend.demoHabr.Subchapt.Subchapt;
 import com.backend.demoHabr.Subchapt.SubchapterRepository;
+import com.backend.demoHabr.User_roles.UserRolesRepository;
+import com.backend.demoHabr.User_roles.User_roles;
 import com.backend.demoHabr.Users.Users;
 import com.backend.demoHabr.Users.UsersRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -19,21 +23,35 @@ public class Configurations {
 
     @Bean
     CommandLineRunner commandLineRunner(
-            UsersRepository usersRepository
+            ChapterRepository chapterRepository,
+            UserRolesRepository userRolesRepository
     ) {
         return args -> {
             Users polina = new Users("Polina", "Guk", "pg@inbox.ru", "12");
             Users user1 = new Users("user", "user", "@email", "pass");
 
+            Roles role = new Roles("admin", "desc");
 
-            Posts post1 = new Posts("title1", "desc1", polina.getId());
-            Posts post2 = new Posts("title2", "desc2", polina.getId());
-            Posts post3 = new Posts("title3", "desc3", user1.getId());
+            User_roles userRoles = new User_roles(List.of(polina), List.of(role));
+            userRolesRepository.save(userRoles);
 
-            polina.setPosts(List.of(post1, post2));
-            user1.setPosts(List.of(post3));
+            Chapter chapter = new Chapter("Java");
 
-            usersRepository.saveAll(List.of(polina, user1));
+            Subchapt chapter1 = new Subchapt("JavaFX", 1);
+            Subchapt chapter2 = new Subchapt("Spring", 1);
+
+            chapter.setSubchaptList(List.of(chapter1, chapter2));
+
+            Posts post1 = new Posts("title1", "desc1", polina.getId(), chapter1.getId());
+            Posts post2 = new Posts("title2", "desc2", polina.getId(), chapter1.getId());
+            Posts post3 = new Posts("title3", "desc3", user1.getId(), chapter2.getId());
+
+            chapter1.setPostsList(List.of(post1, post2));
+            chapter2.setPostsList(List.of(post3));
+
+            chapterRepository.save(chapter);
+
+            userRolesRepository.save(userRoles);
         };
     }
 }

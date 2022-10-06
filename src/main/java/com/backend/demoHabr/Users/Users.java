@@ -21,7 +21,7 @@ public class Users {
             generator = "users_sequence"
     )
     @Column(updatable = false)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String firstname;
@@ -35,9 +35,9 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<Posts> posts;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private List<Posts> posts;
 
     public Users(){}
 
@@ -48,13 +48,13 @@ public class Users {
         this.password = password;
     }
 
-    public Users(Long id, String firstname, String lastname) {
+    public Users(Integer id, String firstname, String lastname) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -74,17 +74,17 @@ public class Users {
         return password;
     }
 
-    public List<Posts> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Posts> posts) {
-        this.posts = posts;
-    }
-
-    public void addPost(Posts posts){
-        this.posts.add(posts);
-    }
+//    public List<Posts> getPosts() {
+//        return posts;
+//    }
+//
+//    public void setPosts(List<Posts> posts) {
+//        this.posts = posts;
+//    }
+//
+//    public void addPost(Posts posts){
+//        this.posts.add(posts);
+//    }
 
     @Override
     public String toString() {

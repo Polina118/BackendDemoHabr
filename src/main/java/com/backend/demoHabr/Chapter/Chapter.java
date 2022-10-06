@@ -30,16 +30,16 @@ public class Chapter {
     private Integer id;
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "chapterId")
-    private List<Posts> postsList;
+    private List<Subchapt> subchaptList;
 
     public Chapter(String name) { // name
         this.name = name;
-        postsList = new ArrayList<>();
+        subchaptList = new ArrayList<>();
     }
 
-    public void addPost(Posts post){
-        postsList.add(post);
+    public void addSubChapter(Subchapt subchapt){
+        subchaptList.add(subchapt);
     }
 }
