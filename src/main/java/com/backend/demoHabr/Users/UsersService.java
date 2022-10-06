@@ -16,26 +16,19 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public List<Users> getAllUsers() {
+    public List<Users> getClients() {
         return usersRepository.findAll();
     }
 
-    public void createUser(Users user) {
-        Optional<Users> userOptional = usersRepository.findUserByEmail(user.getEmail());
-        if (userOptional.isPresent())
-            throw new IllegalStateException("email is taken");
-        usersRepository.save(user);
+    public void createUser(Users users) {
+        Optional<Users> clientOptional = usersRepository.findUserByLogin(users.getLogin());
+        if (clientOptional.isPresent())
+            throw new IllegalStateException("login is taken");
+        usersRepository.save(users);
     }
 
     public Users getByLogin(String login) {
-        return usersRepository.findUserByEmail(login).
-                orElseThrow(() -> new IllegalStateException((" --!incorrect email!-- ")));
-    }
-
-    public void deleteClient(int id) {
-        if (!usersRepository.existsById(id))
-            throw new IllegalStateException("user with id " + id + " does not exists");
-        usersRepository.deleteById(id);
-
+        return usersRepository.findUserByLogin(login).
+                orElseThrow(() -> new IllegalStateException((" --!incorrect login!-- ")));
     }
 }

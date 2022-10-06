@@ -20,15 +20,15 @@ public class User_RolesService {
        this.userRolesRepository = userRolesRepository;
     }
 
-    public void addRole(int userId, String roleValue) {
-        Optional<Roles> optionalRoles = rolesRepository.findRoleByValue(roleValue);
-        if (optionalRoles.isEmpty())
-            throw new IllegalStateException("role " + roleValue + "doesn't exists");
-        int roleId = optionalRoles.get().getId();
-        Optional<User_roles> optionalUserRoles = userRolesRepository.findByRequest(userId, roleId);
-        if (optionalUserRoles.isEmpty())
-            throw new IllegalStateException("");
-        optionalUserRoles.get().setRoleId(roleId);
-        optionalUserRoles.get().setUserId(userId);
-    }
+//    public void addRole(int userId, String roleValue) {
+//        Optional<Roles> optionalRoles = rolesRepository.findRoleByValue(roleValue);
+//        if (optionalRoles.isEmpty())
+//            throw new IllegalStateException("role " + roleValue + "doesn't exists");
+//        int roleId = optionalRoles.get().getId();
+//        Optional<User_roles> optionalUserRoles = userRolesRepository.findByRequest(userId, roleId);
+//        if (optionalUserRoles.isEmpty())
+//            throw new IllegalStateException("");
+//        optionalUserRoles.get().setRoleId(roleId);
+//        optionalUserRoles.get().setUserId(userId);
+//    }
 }

@@ -6,13 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostsRepository extends JpaRepository<Posts, Integer> {
+public interface PostsRepository extends JpaRepository<Posts, Long> {
 
-    List<Posts> findByTitleContaining(String subtitle);
+   // List<Posts> findByTitleContaining(String subtitle);
 
-    @Query("SELECT p FROM posts p WHERE p.title = ?1")
-    Optional<Posts> findByTitle(String title);
-
-    @Query("SELECT p FROM posts p WHERE p.description = ?1")
-    Optional<Posts> findByDescription(String description);
+    @Query("SELECT p FROM posts p WHERE p.user_id = ?1")
+    List<Posts> findAllByUserId(Long userId);
 }

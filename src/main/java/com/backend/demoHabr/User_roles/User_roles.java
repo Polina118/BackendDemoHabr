@@ -23,7 +23,6 @@ public class User_roles {
             generator = "user_roles_sequence"
     )
     int id;
-
     int userId;
     int RoleId;
 }

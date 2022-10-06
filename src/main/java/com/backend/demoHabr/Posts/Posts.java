@@ -2,17 +2,15 @@ package com.backend.demoHabr.Posts;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Table
 @Entity(name = "posts")
 public class Posts {
+
     @Id
     @SequenceGenerator(
             name = "posts_sequence",
@@ -23,24 +21,28 @@ public class Posts {
             strategy = GenerationType.SEQUENCE,
             generator = "posts_sequence"
     )
-    int id;
+    @Column(updatable = false)
+    private Long Id;
 
-    String title;
-    String description;
-//    int userId;
-//    int subchaptId;
-//    int chapterId;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    @Column(nullable = false)
+    private String title;
 
-//    @ManyToOne
-//    @JoinColumn(name = "author")
-//    Users user_author;
+    @Column(nullable = false)
+    private String description;
+    private Long user_id;
 
-    public Posts(String title, String description){
+
+    public Posts(){}
+
+    public Posts(String title, String description, Long user_id) {
         this.title = title;
         this.description = description;
-        this.createdAt = LocalDate.now();
-        this.updatedAt = LocalDate.now();
+        this.user_id = user_id;
+    }
+
+    public Posts(Long id, String title, String description) {
+        Id = id;
+        this.title = title;
+        this.description = description;
     }
 }

@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Table
@@ -26,7 +24,9 @@ public class Roles {
     int id;
     String value;
     String description;
-    LocalDate createdAt;
-    LocalDate updatedAt;
 
+    public Roles(String value, String description) {
+        this.value = value;
+        this.description = description;
+    }
 }

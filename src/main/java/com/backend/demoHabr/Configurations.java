@@ -12,35 +12,28 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @Configuration
 public class Configurations {
 
     @Bean
-    CommandLineRunner commandLineRunner(UsersRepository usersrepository,
-                                        PostsRepository postsRepository,
-                                        ChapterRepository chapterRepository,
-                                        SubchapterRepository subchapterRepository){
+    CommandLineRunner commandLineRunner(
+            UsersRepository usersRepository
+    ) {
         return args -> {
-            Posts post1 = new Posts( "title1", "lalalalal");
-            Posts post2 = new Posts( "title2", "lalalalal");
-            Posts post3 = new Posts( "title3", "lalalalal");
-            postsRepository.saveAll(List.of(post1, post2, post3));
-            List<Posts> postsList = List.of(post1, post2);
+            Users polina = new Users("Polina", "Guk", "pg@inbox.ru", "12");
+            Users user1 = new Users("user", "user", "@email", "pass");
 
-            Subchapt subchapt1 = new Subchapt("JavaFX", postsList);
-            subchapterRepository.save(subchapt1);
 
-            Chapter chapter1 = new Chapter( "Java", List.of(subchapt1));
-            chapterRepository.save(chapter1);
+            Posts post1 = new Posts("title1", "desc1", polina.getId());
+            Posts post2 = new Posts("title2", "desc2", polina.getId());
+            Posts post3 = new Posts("title3", "desc3", user1.getId());
 
-            Users Maria = new Users("maria_email", "password", "Maria", "Smith", true, LocalDate.now(), postsList);
-            Users Willy = new Users("willy_email", "password", "Willy", "tomm", true, LocalDate.now(), List.of(post3));
+            polina.setPosts(List.of(post1, post2));
+            user1.setPosts(List.of(post3));
 
-            usersrepository.saveAll(List.of(Maria, Willy));
+            usersRepository.saveAll(List.of(polina, user1));
         };
     }
 }

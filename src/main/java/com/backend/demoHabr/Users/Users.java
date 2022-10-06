@@ -1,17 +1,12 @@
 package com.backend.demoHabr.Users;
 
 import com.backend.demoHabr.Posts.Posts;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Table
 @Entity(name = "users")
 public class Users {
@@ -25,34 +20,78 @@ public class Users {
             strategy = GenerationType.SEQUENCE,
             generator = "users_sequence"
     )
-    int id;
-    private String email;
+    @Column(updatable = false)
+    private Long id;
+
+    @Column(nullable = false)
+    private String firstname;
+
+    @Column(nullable = false)
+    private String lastname;
+
+    @Column(nullable = false)
+    private String login;
+
+    @Column(nullable = false)
     private String password;
-    private String name;
-    private String surname;
-    //String secondname;
-    private boolean isActivated;
-    //String acticationLink;
-    private LocalDate createdAt;
-    //LocalDate updatedAt;
 
-    @OneToMany
-    @JoinColumn(name = "authorId")
-    List<Posts> postsList;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Posts> posts;
 
-    public Users(String email,
-                 String password,
-                 String name,
-                 String surname,
-                 boolean isActivated,
-                 LocalDate createdAt,
-                 List<Posts> postsList) {
-        this.email = email;
+    public Users(){}
+
+    public Users(String firstname, String lastname, String login, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.login = login;
         this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.isActivated = isActivated;
-        this.createdAt = createdAt;
-        this.postsList = postsList;
+    }
+
+    public Users(Long id, String firstname, String lastname) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public List<Posts> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Posts> posts) {
+        this.posts = posts;
+    }
+
+    public void addPost(Posts posts){
+        this.posts.add(posts);
+    }
+
+    @Override
+    public String toString() {
+        return "User {" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", login='" + login + "'}";
     }
 }

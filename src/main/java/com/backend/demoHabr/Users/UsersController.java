@@ -6,41 +6,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/user")
+@RequestMapping(path = "/api/users")
+@CrossOrigin()
 public class UsersController {
 
     private final UsersService usersService;
-    private final User_RolesService userRolesService;
 
     @Autowired
-    public UsersController(UsersService usersService, User_RolesService userRolesService) {
+    public UsersController(UsersService usersService) {
         this.usersService = usersService;
-        this.userRolesService = userRolesService;
     }
 
-    @GetMapping
-    public List<Users> getUsers(){
-        return usersService.getAllUsers();
+    @GetMapping(path = "/all")
+    public List<Users> getClients() {
+        return usersService.getClients();
     }
 
     @PostMapping(path = "/create")
-    public void createUser(@RequestBody Users user){
-        usersService.createUser(user);
+    @ResponseBody
+    public String createUser(@RequestBody Users users) {
+        usersService.createUser(users);
+        return "Success";
     }
 
     @PostMapping(path = "/byemail")
-    public void findUserByEmail(@RequestParam String email){
-        usersService.getByLogin(email);
+    public Users findByLogin(@RequestParam String login){
+        return usersService.getByLogin(login);
     }
-
-    @PostMapping(path = "/addrole")
-    public void addRole(@RequestBody RequestAddRole request){
-        userRolesService.addRole(request.userId, request.value);
-    }
-
-    @DeleteMapping(path = "{userId}")
-    public void DeleteStudent(@PathVariable("userId") int id){
-        usersService.deleteClient(id);
-    }
-
 }

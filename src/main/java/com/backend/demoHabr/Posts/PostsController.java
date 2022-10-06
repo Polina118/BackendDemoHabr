@@ -1,5 +1,8 @@
 package com.backend.demoHabr.Posts;
 
+import com.backend.demoHabr.Chapter.ChapterRepository;
+import com.backend.demoHabr.Users.Users;
+import com.backend.demoHabr.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,41 +13,31 @@ import java.util.List;
 @CrossOrigin()
 public class PostsController {
 
-    private final PostsService postsService;
+    PostsRepository postsRepository;
+    UsersRepository usersRepository;
 
     @Autowired
-    public PostsController(PostsService postsService) {
-        this.postsService = postsService;
+    public PostsController(PostsRepository postsRepository, UsersRepository usersRepository) {
+        this.postsRepository = postsRepository;
+        this.usersRepository = usersRepository;
     }
 
-    @GetMapping
-    public List<Posts> getPosts() {
-        return postsService.getAllPosts();
+    @GetMapping(path = "/all")
+    public List<Posts> getAllPosts(){
+        return postsRepository.findAll();
     }
 
-    @GetMapping(path = "{subtitle}")
-    public List<Posts> getPostByTitle(@PathVariable("subtitle") String subtitle){
-        return postsService.getByTitle(subtitle);
+    @PostMapping("/create")
+    public Posts createPost(@RequestBody Posts posts){
+        Users users = usersRepository.findById(posts.getUser_id()).orElseThrow(() ->
+                new IllegalStateException((" --!incorrect user id!-- ")));
+        postsRepository.save(posts);
+        users.addPost(posts);
+        return new Posts(posts.getId(), posts.getTitle(), posts.getDescription());
     }
 
-    @PostMapping(path = "/create")
-    @ResponseBody
-    public String createNewPosts(@RequestBody Posts post) {
-        postsService.createNewPost(post);
-        return "Success";
-    }
-
-    @DeleteMapping(path = "/delete{id}")
-    public String DeletePost(@PathVariable("id") int id) {
-        postsService.deletePost(id);
-        return "Deleted";
-    }
-
-    @PutMapping(path = "{postId}")
-    public void UpdatePost(
-            @PathVariable("postId") int postId,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String description){
-        postsService.updatePost(postId, title, description);
+    @PostMapping(path = "/get{userId}")
+    public List<Posts> postsOfUser(@PathVariable("userId") Long userId){
+        return postsRepository.findAllByUserId(userId);
     }
 }

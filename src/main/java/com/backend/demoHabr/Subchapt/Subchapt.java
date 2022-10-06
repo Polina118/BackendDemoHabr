@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,18 +26,22 @@ public class Subchapt {
             strategy = GenerationType.SEQUENCE,
             generator = "subchapt_sequence"
     )
-    int id;
+    private Integer id;
 
-    String name;
-//    LocalDate createdAt;
-//    LocalDate updatedAt;
+    private String name;
+    private Integer chapterId;
 
     @OneToMany
     @JoinColumn(name = "subchapterId")
     List<Posts> postsList;
 
-    public Subchapt(String name, List<Posts> postsList) {
+    public Subchapt(String name, Integer chapterId) { //name, chapterId
         this.name = name;
-        this.postsList = postsList;
+        this.chapterId = chapterId;
+        this.postsList = new ArrayList<>();
+    }
+
+    public void addPost(Posts post){
+        postsList.add(post);
     }
 }
