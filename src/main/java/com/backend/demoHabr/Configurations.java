@@ -20,7 +20,7 @@ import java.util.List;
 
 @Configuration
 public class Configurations {
-
+//Test push
     @Bean
     CommandLineRunner commandLineRunner(
             ChapterRepository chapterRepository,
