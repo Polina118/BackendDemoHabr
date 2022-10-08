@@ -1,13 +1,10 @@
 package com.backend.demoHabr.Chapter;
-
-import com.backend.demoHabr.Posts.Posts;
 import com.backend.demoHabr.Subchapt.Subchapt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
