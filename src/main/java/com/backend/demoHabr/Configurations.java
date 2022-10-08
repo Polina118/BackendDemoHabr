@@ -2,6 +2,7 @@ package com.backend.demoHabr;
 
 import com.backend.demoHabr.Chapter.Chapter;
 import com.backend.demoHabr.Chapter.ChapterRepository;
+import com.backend.demoHabr.Comments.Comments;
 import com.backend.demoHabr.Posts.Posts;
 import com.backend.demoHabr.Posts.PostsRepository;
 import com.backend.demoHabr.Roles.Roles;
@@ -42,9 +43,12 @@ public class Configurations {
 
             chapter.setSubchaptList(List.of(chapter1, chapter2));
 
-            Posts post1 = new Posts("title1", "desc1", polina.getId(), chapter1.getId());
-            Posts post2 = new Posts("title2", "desc2", polina.getId(), chapter1.getId());
-            Posts post3 = new Posts("title3", "desc3", user1.getId(), chapter2.getId());
+            Posts post1 = new Posts("title1", "desc1", polina.getId());
+            Posts post2 = new Posts("title2", "desc2", polina.getId());
+            Posts post3 = new Posts("title3", "desc3", user1.getId());
+
+            Comments comment1 = new Comments("Wow1",polina.getId(), post1.getId());
+            post1.addComment(comment1);
 
             chapter1.setPostsList(List.of(post1, post2));
             chapter2.setPostsList(List.of(post3));

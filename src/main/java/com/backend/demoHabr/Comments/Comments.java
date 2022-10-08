@@ -23,10 +23,14 @@ public class Comments {
             strategy = GenerationType.SEQUENCE,
             generator = "comments_sequence"
     )
-    int id;
+    Integer id;
     String description;
-    int userId;
-    int postId;
-    LocalDate createdAt;
-    LocalDate updatedAt;
+    Integer userId;
+    Integer postId;
+
+    public Comments(String description, Integer userId, Integer postId) {
+        this.description = description;
+        this.userId = userId;
+        this.postId = postId;
+    }
 }

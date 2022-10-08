@@ -1,9 +1,13 @@
 package com.backend.demoHabr.Posts;
 
+import com.backend.demoHabr.Comments.Comments;
+import com.backend.demoHabr.Subchapt.Subchapt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -30,14 +34,21 @@ public class Posts {
     @Column(nullable = false)
     private String description;
     private Integer user_id;
-    private Integer subchapter_id;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    private List<Comments> comments;
 
     public Posts(){}
 
-    public Posts(String title, String description, Integer user_id, Integer subchapter_id) {
+    public Posts(String title, String description, Integer user_id) {
         this.title = title;
         this.description = description;
         this.user_id = user_id;
-        this.subchapter_id = subchapter_id;
+        this.comments = new ArrayList<>();
+    }
+
+    public void addComment(Comments comment){
+        this.comments.add(comment);
     }
 }

@@ -29,8 +29,8 @@ public class UsersController {
         return "Success";
     }
 
-    @PostMapping(path = "/byemail")
-    public Users findByLogin(@RequestParam String login){
+    @PostMapping(path = "/byemail{login}")
+    public Users findByLogin(@RequestParam("login") String login){
         return usersService.getByLogin(login);
     }
 }
