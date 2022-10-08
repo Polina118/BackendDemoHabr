@@ -13,6 +13,6 @@ public interface PostsRepository extends JpaRepository<Posts, Integer> {
     @Query("SELECT p FROM posts p WHERE p.user_id = ?1")
     List<Posts> findAllByUserId(Integer userId);
 
-    @Query("SELECT p FROM posts p WHERE p.subchapter_id= ?1")
-    List<Posts> findAllByChapterId(Integer subchapterId);
+//   @Query("SELECT p FROM posts p WHERE p.subchapter_id= ?1")
+//    List<Posts> findAllByChapterId(Integer subchapterId);
 }

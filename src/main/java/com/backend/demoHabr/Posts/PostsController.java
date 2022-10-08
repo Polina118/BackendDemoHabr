@@ -38,7 +38,7 @@ public class PostsController {
         return postsRepository.findAll();
     }
 
-    @PostMapping("/create")
+  /*  @PostMapping("/create")
     public Posts createPost(@RequestBody Posts posts){
         Users users = usersRepository.findById(posts.getUser_id()).orElseThrow(() ->
                 new IllegalStateException((" --!incorrect user id!-- ")));
@@ -48,14 +48,14 @@ public class PostsController {
         subchapter.addPost(posts);
         return posts;
     }
-
+*/
     @PostMapping(path = "/get{userId}")
     public List<Posts> postsOfUser(@PathVariable("userId") Integer userId){
         return postsRepository.findAllByUserId(userId);
     }
 
-    @PostMapping(path = "/getGroup{subchapterId}")
-    public List<Posts> postsOfChapter(@PathVariable("subchapterId") Integer subchapterId){
-        return postsRepository.findAllByChapterId(subchapterId);
-    }
+//    @PostMapping(path = "/getGroup{subchapterId}")
+//    public List<Posts> postsOfChapter(@PathVariable("subchapterId") Integer subchapterId){
+//        return postsRepository.findAllByChapterId(subchapterId);
+//    }
 }
