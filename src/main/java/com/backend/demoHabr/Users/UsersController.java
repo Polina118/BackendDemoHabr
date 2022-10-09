@@ -24,9 +24,8 @@ public class UsersController {
 
     @PostMapping(path = "/create")
     @ResponseBody
-    public String createUser(@RequestBody Users users) {
-        usersService.createUser(users);
-        return "Success";
+    public Users createUser(@RequestBody Users users) {
+        return usersService.createUser(users);
     }
 
     @PostMapping(path = "/byemail{login}")

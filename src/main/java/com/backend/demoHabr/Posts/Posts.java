@@ -33,6 +33,7 @@ public class Posts {
 
     @Column(nullable = false)
     private String description;
+    @Column()
     private Integer user_id;
 
     @OneToMany(cascade = CascadeType.ALL)

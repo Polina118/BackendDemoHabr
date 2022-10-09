@@ -20,11 +20,12 @@ public class UsersService {
         return usersRepository.findAll();
     }
 
-    public void createUser(Users users) {
+    public Users createUser(Users users) {
         Optional<Users> clientOptional = usersRepository.findUserByLogin(users.getLogin());
         if (clientOptional.isPresent())
             throw new IllegalStateException("login is taken");
         usersRepository.save(users);
+        return users;
     }
 
     public Users getByLogin(String login) {
