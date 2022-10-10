@@ -26,9 +26,11 @@ public class Subchapt {
             strategy = GenerationType.SEQUENCE,
             generator = "subchapt_sequence"
     )
+    @Column(nullable = false)
     private Integer id;
-
+    @Column(nullable = false)
     private String name;
+    @Column()
     private Integer chapterId;
 
     @OneToMany(cascade = CascadeType.ALL)

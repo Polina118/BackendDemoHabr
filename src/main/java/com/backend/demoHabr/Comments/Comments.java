@@ -23,9 +23,13 @@ public class Comments {
             strategy = GenerationType.SEQUENCE,
             generator = "comments_sequence"
     )
+    @Column(nullable = false)
     Integer id;
+    @Column(nullable = false)
     String description;
+    @Column(nullable = false)
     Integer userId;
+    @Column()
     Integer postId;
 
     public Comments(String description, Integer userId, Integer postId) {

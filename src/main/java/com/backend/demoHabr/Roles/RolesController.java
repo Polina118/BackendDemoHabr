@@ -31,7 +31,7 @@ public class RolesController {
     }
 
     @GetMapping(path = "/{value}")
-    public Roles findByValue(@PathVariable("value") String value){
+    public Roles findByValue(@RequestParam("value") String value){
         Optional<Roles> optionalRoles = rolesRepository.findRoleByValue(value);
         if(optionalRoles.isEmpty())
             throw new IllegalStateException(value +" doesn't exists");

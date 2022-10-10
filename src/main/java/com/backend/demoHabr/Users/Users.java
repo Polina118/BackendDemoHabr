@@ -1,11 +1,8 @@
 package com.backend.demoHabr.Users;
 
-import com.backend.demoHabr.Posts.Posts;
+import com.backend.demoHabr.User_roles.User_roles;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Table
 @Entity(name = "users")
@@ -33,11 +30,11 @@ public class Users {
     private String login;
 
     @Column(nullable = false)
-    private String password;
+    private Integer password;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private List<Posts> posts;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleId")
+    private User_roles role;
 
     public Users(){}
 
@@ -45,7 +42,7 @@ public class Users {
         this.firstname = firstname;
         this.lastname = lastname;
         this.login = login;
-        this.password = password;
+        this.password = password.hashCode();
     }
 
     public Users(Integer id, String firstname, String lastname) {
@@ -70,21 +67,6 @@ public class Users {
         return login;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-//    public List<Posts> getPosts() {
-//        return posts;
-//    }
-//
-//    public void setPosts(List<Posts> posts) {
-//        this.posts = posts;
-//    }
-//
-//    public void addPost(Posts posts){
-//        this.posts.add(posts);
-//    }
 
     @Override
     public String toString() {

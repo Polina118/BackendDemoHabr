@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/api/chapters")
+@RequestMapping(path = "/api/chapters")
 @CrossOrigin
 public class ChapterController {
 
@@ -26,7 +26,7 @@ public class ChapterController {
         return chapterRepository.findAll();
     }
 
-    @PostMapping(name = "/crch")
+    @PostMapping(path = "/crch")
     public Chapter createChapter(@RequestBody Chapter chapter){
         Optional<Chapter> optionalChapter = chapterRepository.findChapterByName(chapter.getName());
         if(optionalChapter.isPresent())

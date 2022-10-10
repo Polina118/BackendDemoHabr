@@ -24,7 +24,9 @@ public class Chapter {
             strategy = GenerationType.SEQUENCE,
             generator = "chapter_sequence"
     )
+    @Column(nullable = false)
     private Integer id;
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)

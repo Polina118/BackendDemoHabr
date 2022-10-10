@@ -1,5 +1,6 @@
 package com.backend.demoHabr.Roles;
 
+import com.backend.demoHabr.User_roles.User_roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,16 @@ public class Roles {
             strategy = GenerationType.SEQUENCE,
             generator = "roles_sequence"
     )
+    @Column(nullable = false)
     int id;
+    @Column(nullable = false)
     String value;
+    @Column()
     String description;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "UserId")
+    private User_roles user;
 
     public Roles(String value, String description) {
         this.value = value;
