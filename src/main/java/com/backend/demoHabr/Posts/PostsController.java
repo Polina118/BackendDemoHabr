@@ -7,9 +7,18 @@ import com.backend.demoHabr.Subchapt.SubchapterRepository;
 import com.backend.demoHabr.Users.Users;
 import com.backend.demoHabr.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
 @RequestMapping(path = "/api/posts")
@@ -19,8 +28,10 @@ public class PostsController {
     PostsRepository postsRepository;
     UsersRepository usersRepository;
     ChapterRepository chapterRepository;
-
     SubchapterRepository subchapterRepository;
+
+    @Value("${upload-path}")
+    private String uploadPath;
 
     @Autowired
     public PostsController(PostsRepository postsRepository,
@@ -33,22 +44,61 @@ public class PostsController {
         this.subchapterRepository = subchapterRepository;
     }
 
+    @GetMapping()
+    public String get(){
+        return uploadPath;
+    }
+
     @GetMapping(path = "/all")
     public List<Posts> getAllPosts(){
         return postsRepository.findAll();
     }
 
-  /*  @PostMapping("/create")
-    public Posts createPost(@RequestBody Posts posts){
+    @PostMapping("/create/{chapterId}")
+    public Posts createPost(@RequestBody Posts posts, @PathVariable("chapterId") Integer chapterId){
         Users users = usersRepository.findById(posts.getUser_id()).orElseThrow(() ->
                 new IllegalStateException((" --!incorrect user id!-- ")));
-        Subchapt subchapter = subchapterRepository.findById(posts.getSubchapter_id()).orElseThrow(()->
+        Subchapt subchapter = subchapterRepository.findById(chapterId).orElseThrow(()->
                 new IllegalStateException((" --!incorrect subchapter id!-- ")));
-        postsRepository.save(posts);
         subchapter.addPost(posts);
+        postsRepository.save(posts);
         return posts;
     }
-*/
+
+    @PostMapping("/addFile/{postId}")
+    public String add(@RequestParam MultipartFile file, @PathVariable("postId") Integer postId){
+        Posts post = postsRepository.findById(postId).orElseThrow(()->
+                new IllegalStateException("post not found"));
+
+        if (file.isEmpty() && file.getOriginalFilename().isEmpty())
+            throw new IllegalStateException("file not found");
+        File uploadDir = new File(uploadPath);
+        if(!uploadDir.exists())
+            uploadDir.mkdir();
+
+        String resultFileName = file.getOriginalFilename();
+
+        try {
+            file.transferTo(new File(uploadPath +"/" + resultFileName));
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("error");
+        }
+        //todo: String[] filenames = new String[max];
+        post.setFileName(resultFileName);
+        return resultFileName;
+    }
+
+//    @GetMapping(value = "/image/{filename}", produces = IMAGE_PNG_VALUE)
+//    public byte[] getImage(@PathVariable("filename") String filename) throws IOException {
+//        return Files.readAllBytes(Paths.get(uploadPath +"/"+ filename));
+//    }
+
+    @GetMapping(value = "/image/{filename}")
+    public String getImage(@PathVariable("filename") String filename) {
+        return "<img src=" + uploadPath +"/"+ filename + "width=189 height=255";
+    }
+
     @PostMapping(path = "/get{userId}")
     public List<Posts> postsOfUser(@PathVariable("userId") Integer userId){
         return postsRepository.findAllByUserId(userId);

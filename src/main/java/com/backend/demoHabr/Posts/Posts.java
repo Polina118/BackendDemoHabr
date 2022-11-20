@@ -40,6 +40,9 @@ public class Posts {
     @JoinColumn(name = "postId")
     private List<Comments> comments;
 
+    //todo: String[] filenames = new String[max];
+    private String fileName;
+
     public Posts(){}
 
     public Posts(String title, String description, Integer user_id) {

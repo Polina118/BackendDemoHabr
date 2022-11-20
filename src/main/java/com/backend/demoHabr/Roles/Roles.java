@@ -1,11 +1,12 @@
 package com.backend.demoHabr.Roles;
 
-import com.backend.demoHabr.User_roles.User_roles;
-import lombok.AllArgsConstructor;
+import com.backend.demoHabr.Users.Users;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -23,18 +24,32 @@ public class Roles {
             generator = "roles_sequence"
     )
     @Column(nullable = false)
-    int id;
+    private Integer id;
     @Column(nullable = false)
-    String value;
+    private String value;
     @Column()
-    String description;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId")
-    private User_roles user;
+    private String description;
 
     public Roles(String value, String description) {
         this.value = value;
         this.description = description;
+    }
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<Users> users = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Users)) return false;
+
+        return id != null && id.equals(((Users) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
     }
 }

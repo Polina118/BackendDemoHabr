@@ -1,6 +1,4 @@
 package com.backend.demoHabr.Users;
-
-import com.backend.demoHabr.User_roles.User_RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -31,5 +29,14 @@ public class UsersController {
     @PostMapping(path = "/byemail{login}")
     public Users findByLogin(@RequestParam("login") String login){
         return usersService.getByLogin(login);
+    }
+
+    @PutMapping("/update{id}")
+    public Users updateUser(@PathVariable("id") int userId, @RequestBody Users user){
+        return usersService.updateUser(
+                userId,
+                user.getLogin(),
+                user.getFirstname(),
+                user.getLastname());
     }
 }

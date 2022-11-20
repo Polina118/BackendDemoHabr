@@ -1,8 +1,10 @@
 package com.backend.demoHabr.Users;
 
-import com.backend.demoHabr.User_roles.User_roles;
+import com.backend.demoHabr.Roles.Roles;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Entity(name = "users")
@@ -32,16 +34,11 @@ public class Users {
     @Column(nullable = false)
     private Integer password;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleId")
-    private User_roles role;
-
     public Users(){}
-
-    public Users(String firstname, String lastname, String login, String password) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.login = login;
+    public Users(String email, String password, String name, String surname) {
+        this.firstname = name;
+        this.lastname = surname;
+        this.login = email;
         this.password = password.hashCode();
     }
 
@@ -67,6 +64,17 @@ public class Users {
         return login;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
     @Override
     public String toString() {
@@ -75,5 +83,40 @@ public class Users {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", login='" + login + "'}";
+    }
+
+    @ManyToMany (cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Roles> roles=new ArrayList<>();
+
+    public void addRole(Roles role){
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Roles role){
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Users)) return false;
+
+        return id != null && id.equals(((Users) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
     }
 }

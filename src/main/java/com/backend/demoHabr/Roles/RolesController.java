@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/api/role")
+@RequestMapping(path = "/role")
 @CrossOrigin
 public class RolesController {
 
@@ -23,7 +23,7 @@ public class RolesController {
         return rolesRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/addrole")
     public Roles createRole(@RequestBody Roles role) // value, description
     {
         rolesRepository.save(role);
@@ -32,9 +32,7 @@ public class RolesController {
 
     @GetMapping(path = "/{value}")
     public Roles findByValue(@RequestParam("value") String value){
-        Optional<Roles> optionalRoles = rolesRepository.findRoleByValue(value);
-        if(optionalRoles.isEmpty())
-            throw new IllegalStateException(value +" doesn't exists");
-        return optionalRoles.get();
+        return rolesRepository.findRoleByValue(value).orElseThrow(()->
+                new IllegalStateException(value +" doesn't exists"));
     }
 }

@@ -2,6 +2,7 @@ package com.backend.demoHabr.Users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,20 @@ public class UsersService {
 
     public Users getByLogin(String login) {
         return usersRepository.findUserByLogin(login).
-                orElseThrow(() -> new IllegalStateException((" --!incorrect login!-- ")));
+                orElseThrow(() -> new IllegalStateException(("incorrect login")));
+    }
+
+    @Transactional
+    public Users updateUser(int userId, String login, String firstname, String lastname) {
+        Users user = usersRepository.findById(userId).orElseThrow(()->
+                new IllegalStateException("not found"));
+        if (login != null && login.length() != 0)
+            user.setLogin(login);
+        if (firstname != null && firstname.length() != 0)
+            user.setFirstname(firstname);
+        if (lastname != null && lastname.length() != 0)
+            user.setLastname(lastname);
+        return user;
+
     }
 }
