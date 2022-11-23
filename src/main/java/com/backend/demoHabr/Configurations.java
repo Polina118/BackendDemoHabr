@@ -40,15 +40,15 @@ public class Configurations {
             Subchapt chapter1 = new Subchapt("JavaFX", 1);
             Subchapt chapter2 = new Subchapt("Spring", 1);
 
-            Posts post1 = new Posts("title1", "desc1", polina.getId());
-            Posts post2 = new Posts("title2", "desc2", polina.getId());
-            Posts post3 = new Posts("title3", "desc3", user1.getId());
+//            Posts post1 = new Posts("title1", "desc1", polina.getId());
+//            Posts post2 = new Posts("title2", "desc2", polina.getId());
+//            Posts post3 = new Posts("title3", "desc3", user1.getId());
 
-            Comments comment1 = new Comments("Wow1",polina.getId(), post1.getId());
-            post1.addComment(comment1);
+//            Comments comment1 = new Comments("Wow1",polina.getId(), post1.getId());
+//            post1.addComment(comment1);
 
-            chapter1.setPostsList(List.of(post1, post2));
-            chapter2.setPostsList(List.of(post3));
+//            chapter1.setPostsList(List.of(post1, post2));
+//            chapter2.setPostsList(List.of(post3));
 
             chapter.setSubchaptList(List.of(chapter1, chapter2));
 

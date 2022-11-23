@@ -33,17 +33,17 @@ public class Subchapt {
     @Column()
     private Integer chapterId;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "subchapt_id")
-    private List<Posts> postsList;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "subchapt_id")
+//    private List<Posts> postsList;
 
     public Subchapt(String name, Integer chapterId) { //name, chapterId
         this.name = name;
         this.chapterId = chapterId;
-        this.postsList = new ArrayList<>();
+//        this.postsList = new ArrayList<>();
     }
 
-    public void addPost(Posts post){
-        postsList.add(post);
-    }
+//    public void addPost(Posts post){
+//        postsList.add(post);
+//    }
 }

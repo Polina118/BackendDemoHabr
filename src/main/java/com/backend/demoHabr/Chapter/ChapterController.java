@@ -5,6 +5,7 @@ import com.backend.demoHabr.Subchapt.SubchapterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +22,26 @@ public class ChapterController {
         this.chapterRepository = chapterRepository;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Chapter> getAllChapters(){
         return chapterRepository.findAll();
+    }
+
+    @GetMapping("/titles")
+    public List<String> getTitlesChapters(){
+        List<Chapter> chapters = chapterRepository.findAll();
+        List<String> titles = new ArrayList<>();
+        for (Chapter chapter : chapters)
+            titles.add(chapter.getName());
+        return titles;
+    }
+
+    @GetMapping("/{chapterName}")
+    public List<Subchapt> getSubchapters(@PathVariable("chapterName") String chapterName){
+        Optional<Chapter> chapters = chapterRepository.findChapterByName(chapterName);
+        if (chapters.isEmpty())
+            throw new IllegalStateException("chapter with name" + chapterName + "not found");
+        return chapters.get().getSubchaptList();
     }
 
     @PostMapping(path = "/crch")

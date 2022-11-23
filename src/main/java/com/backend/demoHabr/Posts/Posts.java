@@ -1,12 +1,12 @@
 package com.backend.demoHabr.Posts;
 
 import com.backend.demoHabr.Comments.Comments;
-import com.backend.demoHabr.Subchapt.Subchapt;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,8 +31,18 @@ public class Posts {
     @Column(nullable = false)
     private String title;
 
+    @Column
+    String chapter;
+
+    @Column
+    String subChapter;
+
+    private final int max = 3;
+
+    private String links;
+
     @Column(nullable = false)
-    private String description;
+    private String text;
     @Column()
     private Integer user_id;
 
@@ -40,19 +50,33 @@ public class Posts {
     @JoinColumn(name = "postId")
     private List<Comments> comments;
 
-    //todo: String[] filenames = new String[max];
-    private String fileName;
+    public Posts(){
+    }
 
-    public Posts(){}
-
-    public Posts(String title, String description, Integer user_id) {
+    public Posts(String title, String chapter, String subChapter, String links, String text) {
         this.title = title;
-        this.description = description;
-        this.user_id = user_id;
-        this.comments = new ArrayList<>();
+        this.chapter = chapter;
+        this.subChapter = subChapter;
+        this.links = links;
+        this.text = text;
     }
 
     public void addComment(Comments comment){
         this.comments.add(comment);
+    }
+
+    public String[] getList(){
+        return links.split(",");
+    }
+
+    public String requestText(){
+        String result = text;
+        String[] listLinks = getList();
+        String path = "http://localhost:8080/api/posts/image/";
+        for (String link : listLinks){
+            result = result.replace(link, "</div>\n <img src = \"" + path + link
+            + "\" ></div>");
+        }
+        return "<div>" + result + "</div>";
     }
 }
