@@ -43,6 +43,9 @@ public class Posts {
 
     @Column(nullable = false)
     private String text;
+
+    private String data;
+
     @Column()
     private Integer user_id;
 

@@ -49,10 +49,13 @@ public class PostsController {
         return postsRepository.findAll();
     }
 
-    @GetMapping("/postId")
-    public Posts getPostById(@PathVariable("postId") Integer postId){
-        return postsRepository.findById(postId).orElseThrow(()->
+    @GetMapping("/{postId}")
+    public ResponsePost getPostById(@PathVariable("postId") Integer postId){
+        Posts posts = postsRepository.findById(postId).orElseThrow(()->
                 new IllegalStateException("post not found"));
+        String title = posts.getTitle();
+        String data = "<div>" + posts.requestText() + "</div>";
+        return new ResponsePost(title, data);
     }
 
     @PostMapping("/create")
@@ -78,8 +81,9 @@ public class PostsController {
                 throw new IllegalStateException("error");
             }
         }
+        return "create";
 
-        return "<div>" + post.requestText() + "</div>";
+        //return "<div>" + post.requestText() + "</div>";
     }
 
 //    @PostMapping("/create/{chapterId}")
@@ -93,39 +97,38 @@ public class PostsController {
 //        return posts;
 //    }
 
-    @PostMapping("/addFile/{postId}")
-    public String add(@RequestParam MultipartFile file, @PathVariable("postId") Integer postId){
-        Posts post = postsRepository.findById(postId).orElseThrow(()->
-                new IllegalStateException("post not found"));
-
-        if (file.isEmpty() && file.getOriginalFilename().isEmpty())
-            throw new IllegalStateException("file not found");
-        File uploadDir = new File(uploadPath);
-        if(!uploadDir.exists())
-            uploadDir.mkdir();
-
-        String resultFileName = file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(uploadPath +"/" + resultFileName));
-        }
-        catch (Exception e) {
-            throw new IllegalStateException("error");
-        }
-        //todo: String[] filenames = new String[max];
-        //post.setFileName(resultFileName);
-        return resultFileName;
-    }
-
-//    @GetMapping(value = "/image/{filename}", produces = IMAGE_PNG_VALUE)
-//    public byte[] getImage(@PathVariable("filename") String filename) throws IOException {
-//        return Files.readAllBytes(Paths.get(uploadPath +"/"+ filename));
+//    @PostMapping("/addFile/{postId}")
+//    public String add(@RequestParam MultipartFile file, @PathVariable("postId") Integer postId){
+//        Posts post = postsRepository.findById(postId).orElseThrow(()->
+//                new IllegalStateException("post not found"));
+//
+//        if (file.isEmpty() && file.getOriginalFilename().isEmpty())
+//            throw new IllegalStateException("file not found");
+//        File uploadDir = new File(uploadPath);
+//        if(!uploadDir.exists())
+//            uploadDir.mkdir();
+//
+//        String resultFileName = file.getOriginalFilename();
+//
+//        try {
+//            file.transferTo(new File(uploadPath +"/" + resultFileName));
+//        }
+//        catch (Exception e) {
+//            throw new IllegalStateException("error");
+//        }
+//        //post.setFileName(resultFileName);
+//        return resultFileName;
 //    }
 
-    @GetMapping(value = "/image/{filename}")
-    public String getImage(@PathVariable("filename") String filename) {
-        return "<img src=\"" + uploadPath +"/"+ filename + "\">";
+    @GetMapping(value = "/image/{filename}", produces = IMAGE_PNG_VALUE)
+    public byte[] getImage(@PathVariable("filename") String filename) throws IOException {
+        return Files.readAllBytes(Paths.get(uploadPath +"/"+ filename));
     }
+
+//    @GetMapping(value = "/image/{filename}")
+//    public String getImage(@PathVariable("filename") String filename) {
+//        return "<img src=\"" + uploadPath +"/"+ filename + "\">";
+//    }
 
 //    @PostMapping(path = "/get{userId}")
 //    public List<Posts> postsOfUser(@PathVariable("userId") Integer userId){
