@@ -13,7 +13,6 @@ import java.util.List;
 @Table
 @Entity(name = "chapter")
 public class Chapter {
-    //test
     @Id
     @SequenceGenerator(
             name = "chapter_sequence",
@@ -31,11 +30,10 @@ public class Chapter {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "chapterId")
-    private List<Subchapt> subchaptList;
+    private List<Subchapt> subchaptList = new ArrayList<>();
 
-    public Chapter(String name) { // name
+    public Chapter(String name) {
         this.name = name;
-        subchaptList = new ArrayList<>();
     }
 
     public void addSubChapter(Subchapt subchapt){

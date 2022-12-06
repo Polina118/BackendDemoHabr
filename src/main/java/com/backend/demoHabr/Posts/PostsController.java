@@ -1,20 +1,15 @@
 package com.backend.demoHabr.Posts;
-
-import com.backend.demoHabr.Chapter.Chapter;
 import com.backend.demoHabr.Chapter.ChapterRepository;
-import com.backend.demoHabr.Subchapt.Subchapt;
 import com.backend.demoHabr.Subchapt.SubchapterRepository;
-import com.backend.demoHabr.Users.Users;
-import com.backend.demoHabr.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -26,22 +21,13 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 public class PostsController {
 
     PostsRepository postsRepository;
-    UsersRepository usersRepository;
-    ChapterRepository chapterRepository;
-    SubchapterRepository subchapterRepository;
 
     @Value("${upload-path}")
     private String uploadPath;
 
     @Autowired
-    public PostsController(PostsRepository postsRepository,
-                           UsersRepository usersRepository,
-                           ChapterRepository chapterRepository,
-                           SubchapterRepository subchapterRepository) {
+    public PostsController(PostsRepository postsRepository) {
         this.postsRepository = postsRepository;
-        this.usersRepository = usersRepository;
-        this.chapterRepository = chapterRepository;
-        this.subchapterRepository = subchapterRepository;
     }
 
     @GetMapping(path = "/all")
@@ -73,7 +59,7 @@ public class PostsController {
             if (!uploadDir.exists())
                 uploadDir.mkdir();
 
-            String resultFileName = links[i]; //file.getOriginalFilename();
+            String resultFileName = links[i] + ".png"; //file.getOriginalFilename();
 
             try {
                 file.transferTo(new File(uploadPath + "/" + resultFileName));
@@ -84,6 +70,11 @@ public class PostsController {
         return "create";
 
         //return "<div>" + post.requestText() + "</div>";
+    }
+
+    @GetMapping("/by{title}")
+    public List<Posts> getByTitle(@PathVariable("title") String title){
+        return postsRepository.findAllByTitleContaining(title);
     }
 
 //    @PostMapping("/create/{chapterId}")

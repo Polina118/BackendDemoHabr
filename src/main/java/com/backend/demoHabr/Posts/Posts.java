@@ -3,10 +3,8 @@ package com.backend.demoHabr.Posts;
 import com.backend.demoHabr.Comments.Comments;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,41 +25,34 @@ public class Posts {
     )
     @Column(updatable = false)
     private Integer Id;
-
     @Column(nullable = false)
     private String title;
-
     @Column
     String chapter;
-
     @Column
     String subChapter;
-
-    private final int max = 3;
-
+    @Column
     private String links;
-
     @Column(nullable = false)
     private String text;
 
-    private String data;
-
-    @Column()
-    private Integer user_id;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
-    private List<Comments> comments;
+    private List<Comments> comments = new ArrayList<>();
+
+    @Column(nullable = false)
+    private Integer userId;
 
     public Posts(){
     }
 
-    public Posts(String title, String chapter, String subChapter, String links, String text) {
+    public Posts(String title, String chapter, String subChapter, String links, String text, Integer userId) {
         this.title = title;
         this.chapter = chapter;
         this.subChapter = subChapter;
         this.links = links;
         this.text = text;
+        this.userId = userId;
     }
 
     public void addComment(Comments comment){
@@ -77,7 +68,7 @@ public class Posts {
         String[] listLinks = getList();
         String path = "http://localhost:8080/api/posts/image/";
         for (String link : listLinks){
-            result = result.replace(link, "</div>\n <img src = \"" + path + link
+            result = result.replace(link, "</div> <img src = \"" + path + link
             + "\" ></div>");
         }
         return "<div>" + result + "</div>";
